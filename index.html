@@ -111,7 +111,6 @@
          
         var gnbExpanded = false;
         $gnbList = $('#gnb-wrap .menu-depth1>li');
-         
         //메뉴 열기
         function gnbMenuShow(_this){ 
                 var $menu = _this.find('.menu-panel');
@@ -124,7 +123,18 @@
                 }
         }
         //메뉴 닫기
-        function gnbMenuHide(){ 
+        function gnbMenuHide(_this){ 
+                var $menu = _this.find('.menu-panel');
+                if(0 < $menu.length){
+                    _this.attr({'aria-expanded':false});
+                    gnbExpanded = false;
+
+                    $menu.css({opacity:0});
+                    if(!gnbExpanded){ $('#gnb-wrap-bg').stop().animate({height:0}, 130); }
+                }
+        }
+        //메뉴 모두 닫기
+        function gnbCloseMenuPanel(){
             $gnbList.siblings('[aria-expanded]').attr({'aria-expanded':false});
             gnbExpanded = false;
 
@@ -132,7 +142,7 @@
             $('#gnb-wrap-bg').stop().animate({height:0}, 130);
         }
          
-                 
+        
          
         // 이벤트            
         $gnbList.mouseenter(function(){ 
@@ -140,7 +150,8 @@
             gnbMenuShow(_this);
                 
         }).mouseleave(function(){
-            gnbMenuHide()
+            var _this = $(this);
+            gnbMenuHide(_this)
             
         }).keydown(function(e){
              var keyCode = e.keyCode || e.which;
@@ -152,10 +163,14 @@
                 if(_this.is('[aria-expanded]')){
                     var expanded = _this.attr('aria-expanded');
                     if(expanded == 'false'){ gnbMenuShow(_this); }
-                    else{ gnbMenuHide(); }
+                    else{ gnbMenuHide(_this); }
                     
-                }else{  gnbMenuHide(); }
+                }else{
+                    gnbCloseMenuPanel();
+                }
              }
+            
+            
         });
          
          
@@ -170,10 +185,15 @@
              }
             
          }).click(function(e){  //클릭 & 엔터 & 스페이스바
-             gnbMenuHide();
+             gnbCloseMenuPanel();
              $(this).parents('.menu-panel').prev().focus();
          });
          
+         
+         
+        
+      
+
   </script>
 </body>
 </html>
