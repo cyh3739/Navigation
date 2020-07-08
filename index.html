@@ -25,7 +25,7 @@
         #gnb-wrap .menu-depth1>li[aria-expanded="true"] .menu-panel{max-height:9999px; visibility:visible;} /* 패널 활성화 */
         #gnb-wrap .menu-panel-inner{width:1200px; margin:0 auto; padding:15px;}
         #gnb-wrap .menu-depth3{padding-left:15px;}
-        #gnb-wrap .close-btn{position:absolute; left:-9999px; top:0; z-index:7; background:none; border:none; line-height:1; font-size:37px;} /* 패널 닫기 */
+        #gnb-wrap .close-btn{position:absolute; left:0; top:0; z-index:7; background:none; border:none; line-height:1; font-size:37px;} /* 패널 닫기 */
             
         /* 서브메뉴 패널 bg */
         #gnb-wrap-bg{position:absolute; top:100%; left:0; z-index:3333; width:100%; height:0; overflow:hidden; background:#aaa;}
@@ -111,6 +111,8 @@
          
         var gnbExpanded = false;
         $gnbList = $('#gnb-wrap .menu-depth1>li');
+         
+         
         //메뉴 열기
         function gnbMenuShow(_this){ 
                 var $menu = _this.find('.menu-panel');
@@ -141,23 +143,20 @@
             $('#gnb-wrap .menu-panel').css({opacity:0});
             $('#gnb-wrap-bg').stop().animate({height:0}, 130);
         }
-         
         
          
         // 이벤트            
         $gnbList.mouseenter(function(){ 
             var _this = $(this);
             gnbMenuShow(_this);
-                
+            
         }).mouseleave(function(){
             var _this = $(this);
-            gnbMenuHide(_this)
+            gnbMenuHide(_this);
             
         }).keydown(function(e){
              var keyCode = e.keyCode || e.which;
-            
-             // 엔터키또는 스페이바키
-             if(keyCode == 13 || keyCode ==32){
+             if(keyCode == 13 || keyCode ==32){   // 엔터키또는 스페이바키
                 var _this = $(this);
                  
                 if(_this.is('[aria-expanded]')){
@@ -165,30 +164,24 @@
                     if(expanded == 'false'){ gnbMenuShow(_this); }
                     else{ gnbMenuHide(_this); }
                     
-                }else{
-                    gnbCloseMenuPanel();
-                }
+                }else{ gnbCloseMenuPanel(); }
              }
-            
-            
         });
-         
+        
          
         //포커스 이동 & 닫기 
-        $('#gnb-wrap .close-btn').keydown(function(e){ // 탭키 & 쉬프트+탭키
-             var keyCode = e.keyCode || e.which;
+        $('#gnb-wrap .close-btn').click(function(e){  //클릭 & 엔터 & 스페이스바
+             gnbCloseMenuPanel();
+             $(this).parents('.menu-panel').prev().focus();
             
-             if (e.shiftKey && keyCode == 9 ){  $(this).prev().focus(); }
+        }).keydown(function(e){ // 탭키 & 쉬프트+탭키
+             var keyCode = e.keyCode || e.which;
+             if(e.shiftKey && keyCode == 9 ){ $(this).prev().focus(); }
              else if(keyCode == 9){
                  e.preventDefault(); 
                  $(this).parents('.menu-panel').prev().focus();
              }
-            
-         }).click(function(e){  //클릭 & 엔터 & 스페이스바
-             gnbCloseMenuPanel();
-             $(this).parents('.menu-panel').prev().focus();
-         });
-         
+        });
          
          
         
