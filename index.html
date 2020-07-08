@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0, user-scalable=no">
+	<title>Test</title>
+	
+</head>
+<body>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box;}
+        
+        #gnb-wrap{position:relative; width:100%;}
+        #gnb-wrap ul{list-style:none; padding:0;}
+        #gnb-wrap a{display:block; text-decoration:none; color:#000;}
+        #gnb-wrap a:hover{color:#495057;}
+        
+        /* 메인 메뉴 */
+        #gnb-wrap .menu-depth1{width:1200px; margin:0 auto; font-size:0;}
+        #gnb-wrap .menu-depth1>li{display:inline-block; font-size:16px; font-size:1rem;}
+        #gnb-wrap .menu-depth1>li>a{padding:10px;}
+        /* 서브메뉴 패널 */
+        #gnb-wrap .menu-panel{position:absolute; top:100%; left:0; z-index:7777; width:100%; max-height:0; overflow:hidden; visibility:hidden; opacity:0;}
+        #gnb-wrap .menu-depth1>li[aria-expanded="true"] .menu-panel{max-height:9999px; visibility:visible;} /* 패널 활성화 */
+        #gnb-wrap .menu-panel-inner{width:1200px; margin:0 auto; padding:15px;}
+        #gnb-wrap .menu-depth3{padding-left:15px;}
+        #gnb-wrap .close-btn{position:absolute; left:-9999px; top:0; z-index:7; background:none; border:none; line-height:1; font-size:37px;} /* 패널 닫기 */
+            
+        /* 서브메뉴 패널 bg */
+        #gnb-wrap-bg{position:absolute; top:100%; left:0; z-index:3333; width:100%; height:0; overflow:hidden; background:#aaa;}
+      
+    </style>
+    
+    
+    
+   <nav id="gnb-wrap">
+       <ul role="menubar" class="menu-depth1">
+           <li role="menuitem"><a href="#!">메인메뉴</a></li>
+           <li role="menuitem" aria-haspopup="true" aria-expanded="false">
+               <a href="#!">메인메뉴</a>
+               <div class="menu-panel">
+                   <div class="menu-panel-inner">
+                   <ul role="menu" class="menu-depth2">
+                       <li role="menuitem"><a href="#!">서브메뉴1-1</a></li>
+                       <li role="menuitem" aria-haspopup="true">
+                           <a href="#!">서브메뉴1-1</a>
+                           <ul role="menu" class="menu-depth3">
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                           </ul>
+                       </li>
+                   </ul>
+                   </div>
+                   <button type="button" class="close-btn" aria-label="닫기">&times;</button>
+               </div>
+           </li>
+           <li role="menuitem" aria-haspopup="true" aria-expanded="false">
+               <a href="#!">메인메뉴</a>
+               <div class="menu-panel">
+                   <div class="menu-panel-inner">
+                   <ul role="menu" class="menu-depth2">
+                       <li role="menuitem"><a href="#!111">서브메뉴1-2</a></li>
+                       <li role="menuitem" aria-haspopup="true">
+                           <a href="#!">서브메뉴1-2</a>
+                           <ul role="menu" class="menu-depth3">
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                           </ul>
+                       </li>
+                   </ul>
+                   </div>
+                   <button type="button" class="close-btn" aria-label="닫기">&times;</button>
+               </div>
+           </li>
+           <li role="menuitem" aria-haspopup="true" aria-expanded="false">
+               <a href="#!">메인메뉴</a>
+               <div class="menu-panel">
+                   <div class="menu-panel-inner">
+                   <ul role="menu" class="menu-depth2">
+                       <li role="menuitem"><a href="#!">서브메뉴1-3</a></li>
+                       <li role="menuitem"><a href="#!">서브메뉴1-3</a></li>
+                       <li role="menuitem"><a href="#!">서브메뉴1-3</a></li>
+                       <li role="menuitem"><a href="#!">서브메뉴1-3</a></li>
+                       <li role="menuitem" aria-haspopup="true">
+                           <a href="#!">서브메뉴1</a>
+                           <ul role="menu" class="menu-depth3">
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                               <li role="menuitem"><a href="#!">서브메뉴2</a></li>
+                           </ul>
+                       </li>
+                   </ul>
+                   </div>
+                   <button type="button" class="close-btn" aria-label="닫기">&times;</button>
+               </div>
+           </li>
+       </ul>
+       <div id="gnb-wrap-bg"></div>
+   </nav>
+    
+    
+    
+    <!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	 <script type="text/javascript">
+
+         
+        var gnbExpanded = false;
+        $gnbList = $('#gnb-wrap .menu-depth1>li');
+         
+        //메뉴 열기
+        function gnbMenuShow(_this){ 
+                var $menu = _this.find('.menu-panel');
+                if(0 < $menu.length){
+                    _this.attr({'aria-expanded':true}).siblings('[aria-expanded]').attr({'aria-expanded':false});
+                    gnbExpanded = true;
+                    
+                    $('#gnb-wrap-bg').stop().animate({ height: $menu.outerHeight() }, 130);
+                    $menu.css({opacity:0}).stop().delay(130).animate({opacity:1}, 230);
+                }
+        }
+        //메뉴 닫기
+        function gnbMenuHide(){ 
+            $gnbList.siblings('[aria-expanded]').attr({'aria-expanded':false});
+            gnbExpanded = false;
+
+            $('#gnb-wrap .menu-panel').css({opacity:0});
+            $('#gnb-wrap-bg').stop().animate({height:0}, 130);
+        }
+         
+                 
+         
+        // 이벤트            
+        $gnbList.mouseenter(function(){ 
+            var _this = $(this);
+            gnbMenuShow(_this);
+                
+        }).mouseleave(function(){
+            gnbMenuHide()
+            
+        }).keydown(function(e){
+             var keyCode = e.keyCode || e.which;
+            
+             // 엔터키또는 스페이바키
+             if(keyCode == 13 || keyCode ==32){
+                var _this = $(this);
+                 
+                if(_this.is('[aria-expanded]')){
+                    var expanded = _this.attr('aria-expanded');
+                    if(expanded == 'false'){ gnbMenuShow(_this); }
+                    else{ gnbMenuHide(); }
+                    
+                }else{  gnbMenuHide(); }
+             }
+        });
+         
+         
+        //포커스 이동 & 닫기 
+        $('#gnb-wrap .close-btn').keydown(function(e){ // 탭키 & 쉬프트+탭키
+             var keyCode = e.keyCode || e.which;
+            
+             if (e.shiftKey && keyCode == 9 ){  $(this).prev().focus(); }
+             else if(keyCode == 9){
+                 e.preventDefault(); 
+                 $(this).parents('.menu-panel').prev().focus();
+             }
+            
+         }).click(function(e){  //클릭 & 엔터 & 스페이스바
+             gnbMenuHide();
+             $(this).parents('.menu-panel').prev().focus();
+         });
+         
+  </script>
+</body>
+</html>
